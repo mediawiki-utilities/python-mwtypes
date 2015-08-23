@@ -11,7 +11,7 @@ setup(
     url='https://github.com/halfak/mwtypes',
     license=open('LICENSE').read(),
     description='A set of types for processing MediaWiki data.',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     install_requires=[],
     test_suite='nose.collector',
     classifiers=[
