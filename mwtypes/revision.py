@@ -94,9 +94,9 @@ class Revision(jsonable.Type):
         Revision timestamp : :class:`mwtypes.Timestamp`
         """
 
-        self.user = self.User(user or User())
+        self.user = self.User(user or self.User())
         """
-        Contributor metadata : :class:`~mwtypes.Contributor`
+        Contributing user metadata : :class:`~mwtypes.Revision.User`
         """
 
         self.minor = False or none_or(minor, bool)
@@ -139,7 +139,7 @@ class Revision(jsonable.Type):
         TODO: ??? : `str`
         """
 
-        self.deleted = Deleted(deleted or Deleted())
+        self.deleted = self.Deleted(deleted or self.Deleted())
         """
         The deleted/suppressed status of the revision.
         """
