@@ -1,20 +1,86 @@
 import jsonable
 
-from .contributor import Contributor
-from .deleted import Deleted
 from .timestamp import Timestamp
 from .util import none_or
 
+
+class User(jsonable.Type):
+    """
+    Contributing user meta data.
+    """
+    __slots__ = ('id', 'text')
+
+    def initialize(self, id=None, text=None):
+        self.id = none_or(id, int)
+        """
+        Contributing user's identifier : `int` | None
+        """
+
+        self.text = none_or(text, str)
+        """
+        Username or IP address of the user at the time of the edit : `str` | None
+        """
+
+class Deleted(jsonable.Type):
+    """
+    Represents information about the deleted/suppressed status of a revision
+    and it's associated data.
+    """
+
+    __slots__ = ('text', 'comment', 'user', 'restricted')
+
+    def initialize(self, text=None, comment=None, user=None, restricted=None):
+        self.text = none_or(text, bool)
+        """
+        Is the text of this revision deleted/suppressed? : `bool`
+        """
+
+        self.comment = none_or(comment, bool)
+        """
+        Is the comment of this revision deleted/suppressed? : `bool`
+        """
+
+        self.user = none_or(user, bool)
+        """
+        Is the user of this revision deleted/suppressed? : `bool`
+        """
+
+        self.restricted = none_or(restricted, bool)
+        """
+        Is the revision restricted? : `bool`
+        """
+
+    @classmethod
+    def from_int(cls, integer):
+        """
+        Constructs a `Deleted` using the `tinyint` value of the `rev_deleted`
+        column of the `revision` MariaDB table.
+        DELETED_TEXT = 1;
+        DELETED_COMMENT = 2;
+        DELETED_USER = 4;
+        DELETED_RESTRICTED = 8.
+        """
+        bin_string = bin(integer)
+
+        return cls(
+            text=len(bin_string) >= 1 and bin_string[-1] == "1",
+            comment=len(bin_string) >= 2 and bin_string[-2] == "1",
+            user=len(bin_string) >= 3 and bin_string[-3] == "1",
+            restricted=len(bin_string) >= 4 and bin_string[-4] == "1"
+        )
 
 class Revision(jsonable.Type):
     """
     Revision metadata and text
     """
-    __slots__ = ('id', 'timestamp', 'contributor', 'minor', 'comment',
+    __slots__ = ('id', 'timestamp', 'user', 'minor', 'comment',
                  'text', 'bytes', 'sha1', 'parent_id', 'model', 'format',
                  'deleted')
 
-    def initialize(self, id, timestamp, contributor=None, minor=None,
+    User = User
+    Deleted = Deleted
+
+    def initialize(self, id, timestamp, user=None, minor=None,
                    comment=None, text=None, bytes=None, sha1=None,
                    parent_id=None, model=None, format=None, deleted=None):
 
@@ -28,7 +94,7 @@ class Revision(jsonable.Type):
         Revision timestamp : :class:`mwtypes.Timestamp`
         """
 
-        self.contributor = Contributor(contributor or Contributor())
+        self.user = self.User(user or User())
         """
         Contributor metadata : :class:`~mwtypes.Contributor`
         """
