@@ -2,6 +2,11 @@ from distutils.core import setup
 
 from setuptools import find_packages
 
+def requirements(fname):
+    return [line.strip()
+            for line in open(os.path.join(os.path.dirname(__file__), fname))]
+
+
 setup(
     name='mwtypes',
     version="0.1.2",
@@ -12,7 +17,7 @@ setup(
     license=open('LICENSE').read(),
     description='A set of types for processing MediaWiki data.',
     long_description=open('README.md').read(),
-    install_requires=[],
+    install_requires=requirements("requirements.txt"),
     test_suite='nose.collector',
     classifiers=[
         "Programming Language :: Python",
