@@ -1,3 +1,7 @@
+"""
+.. autoclass:: mwtypes.Page
+    :members:
+"""
 import jsonable
 
 from .util import none_or
@@ -5,7 +9,26 @@ from .util import none_or
 
 class Page(jsonable.Type):
     """
-    Page meta data.
+    Page metadata
+
+    :Attributes:
+
+        .. autoattribute:: mwtypes.Page.id
+            :annotation: = Page ID : int
+
+        .. autoattribute:: mwtypes.Page.title
+            :annotation: = Page title: str
+
+        .. autoattribute:: mwtypes.Page.namespace
+            :annotation: = Namespace ID: str
+
+        .. autoattribute:: mwtypes.Page.redirect
+            :annotation: = Page name that this page redirects to : str | None
+
+        .. autoattribute:: mwtypes.Page.restrictions
+            :annotation: = A list of page editing restrictions :
+                           list( `str` ) | `None`
+
     """
     __slots__ = ('id', 'title', 'namespace', 'redirect', 'restrictions')
 

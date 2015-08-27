@@ -1,0 +1,4 @@
+Page
+=========
+
+.. automodule:: mwtypes.page

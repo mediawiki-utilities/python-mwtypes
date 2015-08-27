@@ -1,3 +1,8 @@
+"""
+.. autoclass:: mwtypes.Revision
+    :members:
+
+"""
 import jsonable
 
 from .timestamp import Timestamp
@@ -6,25 +11,53 @@ from .util import none_or
 
 class User(jsonable.Type):
     """
-    Contributing user meta data.
+    Contributing user metadata.
+
+    :Attributes:
+
+        .. autoattribute:: mwtypes.revision.User.id
+            :annotation: = Contributing user's identifier : int | None
+
+        .. autoattribute:: mwtypes.revision.User.text
+            :annotation: = Username or IP address of the user at the time of
+                           the edit : str | None
+
+
     """
     __slots__ = ('id', 'text')
 
     def initialize(self, id=None, text=None):
         self.id = none_or(id, int)
         """
-        Contributing user's identifier : `int` | None
+        Contributing user's identifier : int | None
         """
 
         self.text = none_or(text, str)
         """
-        Username or IP address of the user at the time of the edit : `str` | None
+        Username or IP address of the user at the time of the edit : str | None
         """
 
 class Deleted(jsonable.Type):
     """
     Represents information about the deleted/suppressed status of a revision
     and it's associated data.
+
+    :Attributes:
+
+        .. autoattribute:: mwtypes.revision.Deleted.text
+            :annotation: = Is the text of this revision deleted/suppressed? :
+                           bool | None
+
+        .. autoattribute:: mwtypes.revision.Deleted.comment
+            :annotation: = Is the text of this revision deleted/suppressed? :
+                           bool | None
+
+        .. autoattribute:: mwtypes.revision.Deleted.user
+            :annotation: = Is the user of this revision deleted/suppressed? :
+                           bool | None
+
+        .. autoattribute:: mwtypes.revision.Deleted.restricted
+            :annotation: = Is the revision restricted? : bool | None
     """
 
     __slots__ = ('text', 'comment', 'user', 'restricted')
@@ -55,10 +88,11 @@ class Deleted(jsonable.Type):
         """
         Constructs a `Deleted` using the `tinyint` value of the `rev_deleted`
         column of the `revision` MariaDB table.
-        DELETED_TEXT = 1;
-        DELETED_COMMENT = 2;
-        DELETED_USER = 4;
-        DELETED_RESTRICTED = 8.
+
+        * DELETED_TEXT = 1
+        * DELETED_COMMENT = 2
+        * DELETED_USER = 4
+        * DELETED_RESTRICTED = 8
         """
         bin_string = bin(integer)
 
@@ -72,6 +106,44 @@ class Deleted(jsonable.Type):
 class Revision(jsonable.Type):
     """
     Revision metadata and text
+
+    :Attributes:
+        .. autoattribute:: mwtypes.Revision.id
+            :annotation: = Revision ID : int
+
+        .. autoattribute:: mwtypes.Revision.timestamp
+            :annotation: = Revision timestamp : mwtypes.Timestamp | None
+
+        .. autoattribute:: mwtypes.Revision.user
+            :annotation: = Contributing user metadata : mwtypes.Revision.User
+
+        .. autoattribute:: mwtypes.Revision.minor
+            :annotation: = Is revision a minor change? : bool | None
+
+        .. autoattribute:: mwtypes.Revision.comment
+            :annotation: = Comment left with revision : str | None
+
+        .. autoattribute:: mwtypes.Revision.text
+            :annotation: = Content of text : str | None
+
+        .. autoattribute:: mwtypes.Revision.bytes
+            :annotation: = Number of bytes of content : str | None
+
+        .. autoattribute:: mwtypes.Revision.sha1
+            :annotation: = sha1 hash of the content : str | None
+
+        .. autoattribute:: mwtypes.Revision.parent_id
+            :annotation: = Revision ID of preceding revision : int | None
+
+        .. autoattribute:: mwtypes.Revision.model
+            :annotation: = TODO: ??? : str | None
+
+        .. autoattribute:: mwtypes.Revision.format
+            :annotation: = TODO: ??? : str | None
+
+        .. autoattribute:: mwtypes.Revision.deleted
+            :annotation: = The deleted/suppressed status of the revision :
+                           mw.Revision.Deleted
     """
     __slots__ = ('id', 'timestamp', 'user', 'minor', 'comment',
                  'text', 'bytes', 'sha1', 'parent_id', 'model', 'format',
@@ -80,7 +152,7 @@ class Revision(jsonable.Type):
     User = User
     Deleted = Deleted
 
-    def initialize(self, id, timestamp, user=None, minor=None,
+    def initialize(self, id, timestamp=None, user=None, minor=None,
                    comment=None, text=None, bytes=None, sha1=None,
                    parent_id=None, model=None, format=None, deleted=None):
 

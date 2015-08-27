@@ -1,3 +1,8 @@
+"""
+.. autoclass:: mwtypes.Timestamp
+    :members:
+"""
+
 import calendar
 import datetime
 import time
@@ -17,14 +22,13 @@ The shorthand version of MediaWiki time strings.
 
 class Timestamp(jsonable.Type):
     """
-    A MediaWiki timestamps
+    Provides a set of convenience functions for working with MediaWiki
+    timestamps.  This class can interpret and return multiple formats as well as
+    perform basic mathematical operations.
 
     :Parameters:
-        time_thing : `time.time_struct` | `datetime.datetime` | `str` | `int` | `float`
+        time_thing : `time.time_struct` | `datetime.datetime` | `str` | `int`
             The timestamp type from which to construct the timestamp class.
-
-    :Returns:
-        :class:`mw.Timestamp`
 
     You can make use of a lot of different *time things* to initialize a
     :class:`mw.Timestamp`.

@@ -1,0 +1,4 @@
+Namespace
+=========
+
+.. automodule:: mwtypes.namespace

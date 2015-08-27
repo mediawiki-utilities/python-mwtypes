@@ -1,0 +1,4 @@
+Timestamp
+=========
+
+.. automodule:: mwtypes.timestamp
