@@ -20,6 +20,11 @@ Contents:
     timestamp
     namespace
 
+Authors
+-------
+* Aaron Halfaker -- https://github.com/halfak
+
+Pull requests welcome @ https://github.com/halfak/python-mwtypes
 
 
 Indices and tables
