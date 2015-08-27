@@ -1,3 +1,4 @@
+import os
 from distutils.core import setup
 
 from setuptools import find_packages
@@ -9,7 +10,7 @@ def requirements(fname):
 
 setup(
     name='mwtypes',
-    version="0.1.2",
+    version="0.1.3",
     author='Aaron Halfaker',
     author_email='aaron.halfaker@gmail.com',
     packages=find_packages(),
