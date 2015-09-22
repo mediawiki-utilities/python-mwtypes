@@ -32,19 +32,19 @@ class Page(jsonable.Type):
     """
     __slots__ = ('id', 'title', 'namespace', 'redirect', 'restrictions')
 
-    def initialize(self, id, title, namespace, redirect=None,
+    def initialize(self, id=None, title=None, namespace=None, redirect=None,
                    restrictions=None):
-        self.id = int(id)
+        self.id = none_or(id, int)
         """
         Page ID : `int`
         """
 
-        self.title = str(title)
+        self.title = none_or(title, str)
         """
         Page title (namespace excluded) : `str`
         """
 
-        self.namespace = int(namespace)
+        self.namespace = none_or(namespace, int)
         """
         Namespace ID : `int`
         """

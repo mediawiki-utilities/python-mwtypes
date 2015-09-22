@@ -2,6 +2,7 @@ import pickle
 
 from nose.tools import eq_
 
+from ..page import Page
 from ..revision import Deleted, Revision, User
 from ..timestamp import Timestamp
 
@@ -11,8 +12,8 @@ def test_revision():
     r = Revision(10, Timestamp("20150101000000"))
     eq_(r.id, 10)
     eq_(r.timestamp, Timestamp("20150101000000"))
-    eq_(r.user.id, None)
-    eq_(r.user.text, None)
+    eq_(r.user, None)
+    eq_(r.page, None)
     eq_(r.minor, None)
     eq_(r.comment, None)
     eq_(r.text, None)
@@ -21,11 +22,12 @@ def test_revision():
     eq_(r.parent_id, None)
     eq_(r.model, None)
     eq_(r.format, None)
-    eq_(r.deleted, Deleted())
+    eq_(r.deleted, None)
 
     # All info
     r = Revision(10, Timestamp("20150101000000"),
                  user=User(10, "Foobar"),
+                 page=Page(12, "Anarchism", 2),
                  minor=False,
                  comment="I have a lovely bunch of ...",
                  text="I am the text",
@@ -40,6 +42,9 @@ def test_revision():
     eq_(r.timestamp, Timestamp("20150101000000"))
     eq_(r.user.id, 10)
     eq_(r.user.text, "Foobar")
+    eq_(r.page.id, 12)
+    eq_(r.page.title, "Anarchism")
+    eq_(r.page.namespace, 2)
     eq_(r.minor, False)
     eq_(r.comment, "I have a lovely bunch of ...")
     eq_(r.text, "I am the text")

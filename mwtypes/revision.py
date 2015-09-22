@@ -5,6 +5,7 @@
 """
 import jsonable
 
+from .page import Page
 from .timestamp import Timestamp
 from .util import none_or
 
@@ -117,6 +118,9 @@ class Revision(jsonable.Type):
         .. autoattribute:: mwtypes.Revision.user
             :annotation: = Contributing user metadata : mwtypes.Revision.User
 
+        .. autoattribute:: mwtypes.Revision.page
+            :annotation: = Page metadata : mwtypes.Page
+
         .. autoattribute:: mwtypes.Revision.minor
             :annotation: = Is revision a minor change? : bool | None
 
@@ -152,7 +156,7 @@ class Revision(jsonable.Type):
     User = User
     Deleted = Deleted
 
-    def initialize(self, id, timestamp=None, user=None, minor=None,
+    def initialize(self, id, timestamp=None, user=None, page=None, minor=None,
                    comment=None, text=None, bytes=None, sha1=None,
                    parent_id=None, model=None, format=None, deleted=None):
 
@@ -166,12 +170,17 @@ class Revision(jsonable.Type):
         Revision timestamp : :class:`mwtypes.Timestamp`
         """
 
-        self.user = self.User(user or self.User())
+        self.user = none_or(user, User)
         """
-        Contributing user metadata : :class:`~mwtypes.Revision.User`
+        Contributing user metadata : :class:`~mwtypes.User`
         """
 
-        self.minor = False or none_or(minor, bool)
+        self.page = none_or(page, Page)
+        """
+        Page metadata : :class:`~mwtypes.Page`
+        """
+
+        self.minor = none_or(minor, bool)
         """
         Is revision a minor change? : `bool`
         """
@@ -211,7 +220,7 @@ class Revision(jsonable.Type):
         TODO: ??? : `str`
         """
 
-        self.deleted = self.Deleted(deleted or self.Deleted())
+        self.deleted = none_or(deleted, self.Deleted)
         """
         The deleted/suppressed status of the revision.
         """

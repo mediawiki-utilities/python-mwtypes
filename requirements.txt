@@ -1,1 +1,1 @@
-jsonable >= 0.2.0
+jsonable >= 0.3.0
