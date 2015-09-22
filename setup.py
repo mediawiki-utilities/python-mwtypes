@@ -10,7 +10,7 @@ def requirements(fname):
 
 setup(
     name='mwtypes',
-    version="0.1.3",
+    version="0.2.0",
     author='Aaron Halfaker',
     author_email='aaron.halfaker@gmail.com',
     packages=find_packages(),
