@@ -19,5 +19,5 @@ def reader(path):
         stdout=subprocess.PIPE,
         stderr=file_open(os.devnull, "w")
     )
-    return io.TextIOWrapper(p.stdout.buffer, encoding='utf-8',
+    return io.TextIOWrapper(p.stdout, encoding='utf-8',
                             errors='replace')
