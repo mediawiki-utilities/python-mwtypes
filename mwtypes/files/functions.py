@@ -1,5 +1,6 @@
 import bz2
 import gzip
+import io
 import os
 
 from . import p7z
@@ -126,3 +127,49 @@ def writer(path):
     else:
         raise RuntimeError("Output compression {0} not supported.  Type {1}"
                            .format(extension, tuple(FILE_WRITERS.keys())))
+
+
+class ConcatinatingTextReader(io.TextIOBase):
+
+    def __init__(self, *items):
+        self.items = [io.StringIO(i) if isinstance(i, str) else i
+                      for i in items]
+
+    def read(self, size=-1):
+        return "".join(self._read(size))
+
+    def readline(self):
+
+        if len(self.items) > 0:
+            line = self.items[0].readline()
+            if line == "":
+                self.items.pop(0)
+        else:
+            line = ""
+
+        return line
+
+    def _read(self, size):
+        if size > 0:
+            while len(self.items) > 0:
+                byte_vals = self.items[0].read(size)
+                yield byte_vals
+                if len(byte_vals) < size:
+                    size = size - len(byte_vals)  # Decrement bytes
+                    self.items.pop(0)
+                else:
+                    break
+
+        else:
+            for item in self.items:
+                yield item.read()
+
+
+def concat(*stream_items):
+    """
+    Performs a streaming concatenation of `str` or `file`.
+    :Parameters:
+        \*stream_items : `str` | `file`
+            A list of items to concatenate together
+    """
+    return ConcatinatingTextReader(*stream_items)
