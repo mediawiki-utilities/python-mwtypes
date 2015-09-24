@@ -149,7 +149,7 @@ class Revision(jsonable.Type):
             :annotation: = The deleted/suppressed status of the revision :
                            mw.Revision.Deleted
     """
-    __slots__ = ('id', 'timestamp', 'user', 'minor', 'comment',
+    __slots__ = ('id', 'timestamp', 'user', 'page', 'minor', 'comment',
                  'text', 'bytes', 'sha1', 'parent_id', 'model', 'format',
                  'deleted')
 
