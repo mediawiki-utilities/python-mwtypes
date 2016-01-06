@@ -2,7 +2,7 @@ MediaWiki Types
 ===============
 This library provides a set of standardized types to be used when processing
 MediaWiki data.  All of the types in this package make use of `jsonable
-<https://github.com/halfak/python-jsonable/>`_ and therefor can be trivially
+<https://github.com/halfak/python-jsonable/>`_ and therefore can be trivially
 serialized as JSON documents.
 
 :Installation: ``pip install mwtypes``
@@ -24,7 +24,7 @@ Authors
 -------
 * Aaron Halfaker -- https://github.com/halfak
 
-Pull requests welcome @ https://github.com/halfak/python-mwtypes
+Pull requests welcome @ https://github.com/mediawiki-utilities/python-mwtypes
 
 
 Indices and tables
