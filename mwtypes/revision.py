@@ -2,41 +2,17 @@
 .. autoclass:: mwtypes.Revision
     :members:
 
+.. autoclass:: mwtypes.Revision.Deleted
+    :members:
+
 """
 import jsonable
 
 from .page import Page
 from .timestamp import Timestamp
+from .user import User
 from .util import none_or
 
-
-class User(jsonable.Type):
-    """
-    Contributing user metadata.
-
-    :Attributes:
-
-        .. autoattribute:: mwtypes.revision.User.id
-            :annotation: = Contributing user's identifier : int | None
-
-        .. autoattribute:: mwtypes.revision.User.text
-            :annotation: = Username or IP address of the user at the time of
-                           the edit : str | None
-
-
-    """
-    __slots__ = ('id', 'text')
-
-    def initialize(self, id=None, text=None):
-        self.id = none_or(id, int)
-        """
-        Contributing user's identifier : int | None
-        """
-
-        self.text = none_or(text, str)
-        """
-        Username or IP address of the user at the time of the edit : str | None
-        """
 
 class Deleted(jsonable.Type):
     """
@@ -104,6 +80,7 @@ class Deleted(jsonable.Type):
             restricted=len(bin_string) >= 4 and bin_string[-4] == "1"
         )
 
+
 class Revision(jsonable.Type):
     """
     Revision metadata and text
@@ -116,10 +93,10 @@ class Revision(jsonable.Type):
             :annotation: = Revision timestamp : mwtypes.Timestamp | None
 
         .. autoattribute:: mwtypes.Revision.user
-            :annotation: = Contributing user metadata : mwtypes.Revision.User
+            :annotation: = Contributing user metadata : mwtypes.User | None
 
         .. autoattribute:: mwtypes.Revision.page
-            :annotation: = Page metadata : mwtypes.Page
+            :annotation: = Page metadata : mwtypes.Page | None
 
         .. autoattribute:: mwtypes.Revision.minor
             :annotation: = Is revision a minor change? : bool | None
@@ -147,7 +124,7 @@ class Revision(jsonable.Type):
 
         .. autoattribute:: mwtypes.Revision.deleted
             :annotation: = The deleted/suppressed status of the revision :
-                           mw.Revision.Deleted
+                           mwtypes.Revision.Deleted
     """
     __slots__ = ('id', 'timestamp', 'user', 'page', 'minor', 'comment',
                  'text', 'bytes', 'sha1', 'parent_id', 'model', 'format',

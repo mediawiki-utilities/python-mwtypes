@@ -3,8 +3,9 @@ import pickle
 from nose.tools import eq_
 
 from ..page import Page
-from ..revision import Deleted, Revision, User
+from ..revision import Deleted, Revision
 from ..timestamp import Timestamp
+from ..user import User
 
 
 def test_revision():
