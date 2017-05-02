@@ -12,7 +12,9 @@ from .revision import Revision
 from .user import User
 from .log_item import LogItem
 from .timestamp import Timestamp
+from .about import (__name__, __version__, __author__, __author_email__,
+                    __description__, __license__, __url__)
 
-__version__ = "0.2.0"
-
-__all__ = (Namespace, Page, Revision, User, LogItem, Timestamp)
+__all__ = (Namespace, Page, Revision, User, LogItem, Timestamp,
+           __name__, __version__, __author__, __author_email__,
+           __description__, __license__, __url__)

@@ -2,12 +2,6 @@
 .. autoclass:: mwtypes.LogItem
     :members:
 
-.. autoclass:: mwtypes.LogItem.Deleted
-    :members:
-
-.. autoclass:: mwtypes.LogItem.Page
-    :members:
-
 """
 import jsonable
 
@@ -23,19 +17,19 @@ class Deleted(jsonable.Type):
 
     :Attributes:
 
-        .. autoattribute:: mwtypes.LogItem.Deleted.action
+        .. autoattribute:: mwtypes.log_item.Deleted.action
             :annotation: = Is the action of this log item deleted/suppressed? :
                            bool | None
 
-        .. autoattribute:: mwtypes.LogItem.Deleted.comment
+        .. autoattribute:: mwtypes.log_item.Deleted.comment
             :annotation: = Is the text of this log item deleted/suppressed? :
                            bool | None
 
-        .. autoattribute:: mwtypes.LogItem.Deleted.user
+        .. autoattribute:: mwtypes.log_item.Deleted.user
             :annotation: = Is the user of this log item deleted/suppressed? :
                            bool | None
 
-        .. autoattribute:: mwtypes.LogItem.Deleted.restricted
+        .. autoattribute:: mwtypes.log_item.Deleted.restricted
             :annotation: = Is the log item restricted? : bool | None
     """
 
@@ -90,10 +84,10 @@ class Page(jsonable.Type):
 
     :Attributes:
 
-        .. autoattribute:: mwtypes.LogItem.Page.namespace
+        .. autoattribute:: mwtypes.log_item.Page.namespace
             :annotation: = namespace ID : int
 
-        .. autoattribute:: mwtypes.LogItem.Page.title
+        .. autoattribute:: mwtypes.log_item.Page.title
             :annotation: = title : str
     """
     __slots__ = ('namespace', 'title')
@@ -112,13 +106,16 @@ class LogItem(jsonable.Type):
             :annotation: = Log item ID : int
 
         .. autoattribute:: mwtypes.LogItem.timestamp
-            :annotation: = Log item timestamp : mwtypes.Timestamp | None
+            :annotation: = Log item timestamp :
+                           mwtypes.Timestamp | None
 
         .. autoattribute:: mwtypes.LogItem.user
-            :annotation: = Contributing user metadata : mwtypes.User | None
+            :annotation: = Contributing user metadata :
+                           mwtypes.User | None
 
-        .. autoattribute:: mwtypes.LogItem.log_title
-            :annotation: = Title associated with log item : str | None
+        .. autoattribute:: mwtypes.LogItem.page
+            :annotation: = Contributing user metadata :
+                           mwtypes.log_item.Page | None
 
         .. autoattribute:: mwtypes.LogItem.comment
             :annotation: = Comment left with log item : str | None
@@ -137,12 +134,13 @@ class LogItem(jsonable.Type):
 
         .. autoattribute:: mwtypes.LogItem.deleted
             :annotation: = The deleted/suppressed status of the log item :
-                           mwtypes.Deleted | None
+                           mwtypes.log_item.Deleted | None
     """
-    __slots__ = ('id', 'timestamp', 'page', 'comment', 'type', 'action',
-                 'text', 'params', 'deleted')
+    __slots__ = ('id', 'timestamp', 'user', 'page', 'comment', 'type',
+                 'action', 'text', 'params', 'deleted')
 
     Deleted = Deleted
+    Page = Page
 
     def initialize(self, id, timestamp=None, user=None, page=None,
                    comment=None, type=None, action=None, text=None,
@@ -160,12 +158,12 @@ class LogItem(jsonable.Type):
 
         self.user = none_or(user, User)
         """
-        Contributing user metadata : :class:`~mwtypes.User`
+        Contributing user metadata : :class:`mwtypes.User`
         """
 
-        self.page = none_or(page, Page)
+        self.page = none_or(page, self.Page)
         """
-        Contributing user metadata : :class:`~mwtypes.User`
+        Related page : :class:`mwtypes.log_item.Page`
         """
 
         self.comment = none_or(comment, str)

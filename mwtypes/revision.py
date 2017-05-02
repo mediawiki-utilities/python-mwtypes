@@ -2,9 +2,6 @@
 .. autoclass:: mwtypes.Revision
     :members:
 
-.. autoclass:: mwtypes.Revision.Deleted
-    :members:
-
 """
 import jsonable
 
@@ -90,13 +87,16 @@ class Revision(jsonable.Type):
             :annotation: = Revision ID : int
 
         .. autoattribute:: mwtypes.Revision.timestamp
-            :annotation: = Revision timestamp : mwtypes.Timestamp | None
+            :annotation: = Revision timestamp :
+                           mwtypes.Timestamp | None
 
         .. autoattribute:: mwtypes.Revision.user
-            :annotation: = Contributing user metadata : mwtypes.User | None
+            :annotation: = Contributing user metadata :
+                           mwtypes.User` | None
 
         .. autoattribute:: mwtypes.Revision.page
-            :annotation: = Page metadata : mwtypes.Page | None
+            :annotation: = Page metadata :
+                           mwtypes.Page | None
 
         .. autoattribute:: mwtypes.Revision.minor
             :annotation: = Is revision a minor change? : bool | None
@@ -124,7 +124,7 @@ class Revision(jsonable.Type):
 
         .. autoattribute:: mwtypes.Revision.deleted
             :annotation: = The deleted/suppressed status of the revision :
-                           mwtypes.Revision.Deleted
+                           mwtypes.revision.Deleted | None
     """
     __slots__ = ('id', 'timestamp', 'user', 'page', 'minor', 'comment',
                  'text', 'bytes', 'sha1', 'parent_id', 'model', 'format',

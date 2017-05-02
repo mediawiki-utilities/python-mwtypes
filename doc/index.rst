@@ -17,6 +17,7 @@ Contents:
 
     revision
     page
+    log_item
     timestamp
     namespace
 
