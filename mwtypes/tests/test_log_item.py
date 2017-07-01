@@ -7,7 +7,7 @@ from ..timestamp import Timestamp
 from ..user import User
 
 
-def test_revision():
+def test_log_item():
     # No info
     l = LogItem(10, Timestamp("20150101000000"))
     eq_(l.id, 10)
@@ -51,7 +51,6 @@ def test_revision():
     # JSON and Pickle
     eq_(l, LogItem(l.to_json()))
     eq_(l, pickle.loads(pickle.dumps(l)))
-
 
 
 def test_deleted():
