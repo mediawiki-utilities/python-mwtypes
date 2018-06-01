@@ -20,7 +20,7 @@ class Page(jsonable.Type):
             :annotation: = Page title: str
 
         .. autoattribute:: mwtypes.Page.namespace
-            :annotation: = Namespace ID: str
+            :annotation: = Namespace ID: int
 
         .. autoattribute:: mwtypes.Page.redirect
             :annotation: = Page name that this page redirects to : str | None
