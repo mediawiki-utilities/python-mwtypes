@@ -108,7 +108,7 @@ class Revision(jsonable.Type):
             :annotation: = Content of text : str | None
 
         .. autoattribute:: mwtypes.Revision.bytes
-            :annotation: = Number of bytes of content : str | None
+            :annotation: = Number of bytes of content : int | None
 
         .. autoattribute:: mwtypes.Revision.sha1
             :annotation: = sha1 hash of the content : str | None
@@ -174,7 +174,7 @@ class Revision(jsonable.Type):
 
         self.bytes = none_or(bytes, int)
         """
-        Number of bytes of content : `str`
+        Number of bytes of content : `int`
         """
 
         self.sha1 = none_or(sha1, str)
