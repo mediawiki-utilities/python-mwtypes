@@ -1,5 +1,5 @@
 __name__ = "mwtypes"
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 __author__ = "Aaron Halfaker"
 __author_email__ = "aaron.halfaker@gmail.com"
 __description__ = "A set of types for processing MediaWiki data."
