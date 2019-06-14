@@ -75,10 +75,6 @@ def normalize_path(path_or_f):
 
     _, extension = extract_extension(path)
 
-    if extension not in FILE_READERS:
-        raise FileTypeError("Extension {0} is not supported."
-                            .format(repr(extension)))
-
     return path
 
 
