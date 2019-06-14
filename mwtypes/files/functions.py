@@ -6,12 +6,19 @@ import os
 from . import p7z
 from ..errors import FileTypeError
 
+
+def plain_reader(fn):
+    return open(fn, 'rt', encoding='utf-8', errors='replace')
+
+
+def plain_writer(fn):
+    return open(fn, 'wt', encoding='utf-8', errors='replace')
+
+
 FILE_READERS = {
     'gz': lambda fn: gzip.open(fn, 'rt', encoding='utf-8', errors='replace'),
     'bz2': lambda fn: bz2.open(fn, 'rt', encoding='utf-8', errors='replace'),
-    '7z': p7z.reader,
-    'json': lambda fn: open(fn, 'rt', encoding='utf-8', errors='replace'),
-    'xml': lambda fn: open(fn, 'rt', encoding='utf-8', errors='replace')
+    '7z': p7z.reader
 }
 """
 Maps extensions to the strategy for opening/decompressing a file
@@ -19,10 +26,7 @@ Maps extensions to the strategy for opening/decompressing a file
 
 FILE_WRITERS = {
     'gz': lambda fn: gzip.open(fn, 'wt', encoding='utf-8', errors='replace'),
-    'bz2': lambda fn: bz2.open(fn, 'wt', encoding='utf-8', errors='replace'),
-    'plaintext': lambda fn: open(fn, 'wt', encoding='utf-8', errors='replace'),
-    'json': lambda fn: open(fn, 'wt', encoding='utf-8', errors='replace'),
-    'xml': lambda fn: open(fn, 'wt', encoding='utf-8', errors='replace')
+    'bz2': lambda fn: bz2.open(fn, 'wt', encoding='utf-8', errors='replace')
 }
 """
 Maps compression types to the strategy for opening/compressing a file
@@ -104,7 +108,10 @@ def reader(path_or_f):
     path = normalize_path(path)
     _, extension = extract_extension(path)
 
-    reader_func = FILE_READERS[extension]
+    if extension in FILE_READERS:
+        reader_func = FILE_READERS[extension]
+    else:
+        reader_func = plain_reader
 
     return reader_func(path)
 
@@ -125,8 +132,7 @@ def writer(path):
         writer_func = FILE_WRITERS[extension]
         return writer_func(path)
     else:
-        raise RuntimeError("Output compression {0} not supported.  Type {1}"
-                           .format(extension, tuple(FILE_WRITERS.keys())))
+        return plain_writer(path)
 
 
 class ConcatinatingTextReader(io.TextIOBase):
