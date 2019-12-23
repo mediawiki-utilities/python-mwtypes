@@ -4,7 +4,6 @@ import io
 import os
 
 from . import p7z
-from ..errors import FileTypeError
 
 
 def plain_reader(fn):

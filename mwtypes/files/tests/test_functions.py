@@ -33,11 +33,6 @@ def test_normalize_path_directory():
     normalize_path(os.path.dirname(__file__))
 
 
-@raises(FileTypeError)
-def test_normalize_path_bad_extension():
-    normalize_path(__file__)
-
-
 def test_open():
     f = io.StringIO()
     eq_(f, reader(f))

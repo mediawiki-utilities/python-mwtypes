@@ -6,6 +6,7 @@
 import jsonable
 
 from .page import Page
+from .slots import Slots
 from .timestamp import Timestamp
 from .user import User
 from .util import none_or
@@ -19,7 +20,8 @@ class Deleted(jsonable.Type):
     :Attributes:
 
         .. autoattribute:: mwtypes.revision.Deleted.text
-            :annotation: = Is the text of this revision deleted/suppressed? :
+            :annotation: = Is the main slot content of this revision
+                           deleted/suppressed? :
                            bool | None
 
         .. autoattribute:: mwtypes.revision.Deleted.comment
@@ -87,16 +89,13 @@ class Revision(jsonable.Type):
             :annotation: = Revision ID : int
 
         .. autoattribute:: mwtypes.Revision.timestamp
-            :annotation: = Revision timestamp :
-                           mwtypes.Timestamp | None
+            :annotation: = Revision timestamp : mwtypes.Timestamp | None
 
         .. autoattribute:: mwtypes.Revision.user
-            :annotation: = Contributing user metadata :
-                           mwtypes.User` | None
+            :annotation: = Contributing user metadata : mwtypes.User` | None
 
         .. autoattribute:: mwtypes.Revision.page
-            :annotation: = Page metadata :
-                           mwtypes.Page | None
+            :annotation: = Page metadata : mwtypes.Page | None
 
         .. autoattribute:: mwtypes.Revision.minor
             :annotation: = Is revision a minor change? : bool | None
@@ -125,17 +124,19 @@ class Revision(jsonable.Type):
         .. autoattribute:: mwtypes.Revision.deleted
             :annotation: = The deleted/suppressed status of the revision :
                            mwtypes.revision.Deleted | None
+
+        .. autoattribute:: mwtypes.Revision.slots
+            :annotation: = The content of the revision :
+                           mwtypes.Slots | None
     """
     __slots__ = ('id', 'timestamp', 'user', 'page', 'minor', 'comment',
-                 'text', 'bytes', 'sha1', 'parent_id', 'model', 'format',
-                 'deleted')
+                 'slots', 'parent_id', 'deleted')
 
     User = User
     Deleted = Deleted
 
     def initialize(self, id, timestamp=None, user=None, page=None, minor=None,
-                   comment=None, text=None, bytes=None, sha1=None,
-                   parent_id=None, model=None, format=None, deleted=None):
+                   comment=None, slots=None, parent_id=None, deleted=None):
 
         self.id = none_or(id, int)
         """
@@ -167,37 +168,31 @@ class Revision(jsonable.Type):
         Comment left with revision : `str`
         """
 
-        self.text = none_or(text, str)
-        """
-        Content of text : `str`
-        """
-
-        self.bytes = none_or(bytes, int)
-        """
-        Number of bytes of content : `int`
-        """
-
-        self.sha1 = none_or(sha1, str)
-        """
-        sha1 hash of the content : `str`
-        """
-
         self.parent_id = none_or(parent_id, int)
         """
         Revision ID of preceding revision : `int` | `None`
-        """
-
-        self.model = none_or(model, str)
-        """
-        TODO: ??? : `str`
-        """
-
-        self.format = none_or(format, str)
-        """
-        TODO: ??? : `str`
         """
 
         self.deleted = none_or(deleted, self.Deleted)
         """
         The deleted/suppressed status of the revision.
         """
+
+        self.slots = none_or(slots, Slots)
+        """
+        The content of the revision
+        """
+
+        if self.slots is not None and 'main' in self.slots:
+            main_slot = self.slots['main']
+            self.text = none_or(main_slot.text, str)
+            self.sha1 = none_or(main_slot.sha1, str)
+            self.model = none_or(main_slot.model, str)
+            self.format = none_or(main_slot.format, str)
+            self.bytes = none_or(main_slot.bytes, int)
+        else:
+            self.text = None
+            self.sha1 = None
+            self.model = None
+            self.format = None
+            self.bytes = None
