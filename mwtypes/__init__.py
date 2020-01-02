@@ -13,11 +13,12 @@ from .log_item import LogItem
 from .namespace import Namespace
 from .page import Page
 from .revision import Revision
-from .slots import Slots
+from .slots import Slots, Content
 from .timestamp import Timestamp
 from .upload import Upload
 from .user import User
 
-__all__ = (Namespace, Page, Revision, Slots, Upload, User, LogItem, Timestamp,
+__all__ = (Namespace, Page, Revision, Slots, Content, Upload, User, LogItem,
+           Timestamp,
            __name__, __version__, __author__, __author_email__,
            __description__, __license__, __url__)

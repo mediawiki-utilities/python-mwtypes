@@ -10,41 +10,12 @@ import jsonable
 from .util import none_or
 
 
-class Slots(jsonable.Type):
-    __slots__ = ('sha1', 'contents')
-
-    def initialize(self, sha1, contents):
-        self.sha1 = none_or(sha1, str)
-        """
-        A sha1 generated from all of the contents
-        """
-
-        self.contents = {
-            name: none_or(content, Content)
-            for name, content in contents.items()}
-        """
-        The contents of the slots
-        """
-
-    def __getitem__(self, name):
-        return self.contents[name]
-
-    def __contains__(self, name):
-        return name in self.contents
-
-    def get(self, name, default=None):
-        if name in self.contents:
-            return self.content[name]
-        else:
-            return default
-
-
 class Content(jsonable.Type):
     __slots__ = ('role', 'origin', 'model', 'format', 'deleted', 'location',
                  'bytes', 'sha1', 'text')
 
     def initialize(self, role=None, origin=None, model=None, format=None,
-                   deleted=None, location=None, bytes=None, sha1=None,
+                   deleted=None, id=None, location=None, bytes=None, sha1=None,
                    text=None):
         self.role = none_or(role, str)
         """
@@ -71,6 +42,11 @@ class Content(jsonable.Type):
         True if the text has been deleted/suppressed.
         """
 
+        self.id = none_or(id, str)
+        """
+        An ID?
+        """
+
         self.location = none_or(location, str)
         """
         A URI representing the location of the content.
@@ -90,3 +66,33 @@ class Content(jsonable.Type):
         """
         A text representation of the content
         """
+
+
+class Slots(jsonable.Type):
+    Content = Content
+    __slots__ = ('sha1', 'contents')
+
+    def initialize(self, sha1, contents):
+        self.sha1 = none_or(sha1, str)
+        """
+        A sha1 generated from all of the contents
+        """
+
+        self.contents = {
+            name: none_or(content, Content)
+            for name, content in contents.items()}
+        """
+        The contents of the slots
+        """
+
+    def __getitem__(self, name):
+        return self.contents[name]
+
+    def __contains__(self, name):
+        return name in self.contents
+
+    def get(self, name, default=None):
+        if name in self.contents:
+            return self.content[name]
+        else:
+            return default

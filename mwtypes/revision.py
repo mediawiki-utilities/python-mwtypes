@@ -134,6 +134,7 @@ class Revision(jsonable.Type):
 
     User = User
     Deleted = Deleted
+    Slots = Slots
 
     def initialize(self, id, timestamp=None, user=None, page=None, minor=None,
                    comment=None, slots=None, parent_id=None, deleted=None):

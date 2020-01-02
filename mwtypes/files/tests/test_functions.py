@@ -3,7 +3,6 @@ import os
 
 from nose.tools import eq_, raises
 
-from ...errors import FileTypeError
 from ..functions import concat, extract_extension, normalize_path, reader
 
 
