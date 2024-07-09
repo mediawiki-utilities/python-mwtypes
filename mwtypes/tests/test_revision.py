@@ -4,6 +4,7 @@ from nose.tools import eq_
 
 from ..page import Page
 from ..revision import Deleted, Revision
+from ..slots import Content, Slots
 from ..timestamp import Timestamp
 from ..user import User
 
@@ -24,6 +25,7 @@ def test_revision():
     eq_(r.model, None)
     eq_(r.format, None)
     eq_(r.deleted, None)
+    eq_(r.slots, None)
 
     # All info
     r = Revision(10, Timestamp("20150101000000"),
@@ -31,12 +33,16 @@ def test_revision():
                  page=Page(12, "Anarchism", 2),
                  minor=False,
                  comment="I have a lovely bunch of ...",
-                 text="I am the text",
-                 bytes=257,
-                 sha1="fe5f4fe65fe765ef",
+                 slots=Slots(
+                    sha1="2345672bb",
+                    contents={'main': Content(
+                            text="I am the text",
+                            bytes=257,
+                            sha1="fe5f4fe65fe765ef",
+                            model="text",
+                            format="also_text",
+                            deleted=True)}),
                  parent_id=9,
-                 model="text",
-                 format="also_text",
                  deleted=Deleted(text=True, comment=False, user=False,
                                  restricted=False))
     eq_(r.id, 10)
@@ -49,11 +55,16 @@ def test_revision():
     eq_(r.minor, False)
     eq_(r.comment, "I have a lovely bunch of ...")
     eq_(r.text, "I am the text")
+    eq_(r.slots['main'].text, "I am the text")
     eq_(r.bytes, 257)
+    eq_(r.slots['main'].bytes, 257)
     eq_(r.sha1, "fe5f4fe65fe765ef")
-    eq_(r.parent_id, 9)
+    eq_(r.slots.sha1, "2345672bb")
     eq_(r.model, "text")
+    eq_(r.slots['main'].model, "text")
     eq_(r.format, "also_text")
+    eq_(r.slots['main'].format, "also_text")
+    eq_(r.parent_id, 9)
     eq_(r.deleted.text, True)
     eq_(r.deleted.comment, False)
     eq_(r.deleted.user, False)
@@ -62,7 +73,6 @@ def test_revision():
     # JSON and Pickle
     eq_(r, Revision(r.to_json()))
     eq_(r, pickle.loads(pickle.dumps(r)))
-
 
 
 def test_deleted():
@@ -114,6 +124,7 @@ def test_deleted():
     # JSON and Pickle
     eq_(d, Deleted(d.to_json()))
     eq_(d, pickle.loads(pickle.dumps(d)))
+
 
 def test_user():
     # No info

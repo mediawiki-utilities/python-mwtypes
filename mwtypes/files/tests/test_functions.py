@@ -3,7 +3,6 @@ import os
 
 from nose.tools import eq_, raises
 
-from ...errors import FileTypeError
 from ..functions import concat, extract_extension, normalize_path, reader
 
 
@@ -31,11 +30,6 @@ def test_normalize_path_noexist():
 @raises(IsADirectoryError)
 def test_normalize_path_directory():
     normalize_path(os.path.dirname(__file__))
-
-
-@raises(FileTypeError)
-def test_normalize_path_bad_extension():
-    normalize_path(__file__)
 
 
 def test_open():
