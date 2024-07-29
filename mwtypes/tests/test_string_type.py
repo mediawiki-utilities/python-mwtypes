@@ -1,5 +1,3 @@
-from nose.tools import eq_
-
 from ..string_type import StringType
 
 
@@ -13,6 +11,6 @@ class FooBar(StringType):
 def test_string_type():
 
     foobar = FooBar("foobar", 1, 2)
-    eq_(foobar, "foobar")
-    eq_(foobar.foo, 1)
-    eq_(foobar.bar, 2)
+    assert foobar == "foobar"
+    assert foobar.foo == 1
+    assert foobar.bar == 2

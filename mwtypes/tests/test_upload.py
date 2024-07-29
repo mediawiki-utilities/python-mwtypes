@@ -1,7 +1,5 @@
 import pickle
 
-from nose.tools import eq_
-
 from ..timestamp import Timestamp
 from ..upload import Upload
 from ..user import User
@@ -10,12 +8,12 @@ from ..user import User
 def test_upload():
     # No info
     u = Upload(Timestamp("20150101000000"))
-    eq_(u.timestamp, Timestamp("20150101000000"))
-    eq_(u.user, None)
-    eq_(u.comment, None)
-    eq_(u.filename, None)
-    eq_(u.source, None)
-    eq_(u.size, None)
+    assert u.timestamp == Timestamp("20150101000000")
+    assert u.user == None
+    assert u.comment == None
+    assert u.filename == None
+    assert u.source == None
+    assert u.size == None
 
     # All info
     u = Upload(Timestamp("20150101000000"),
@@ -24,14 +22,14 @@ def test_upload():
                filename="Foo_bar.jpg",
                source="https://foo",
                size=345678)
-    eq_(u.timestamp, Timestamp("20150101000000"))
-    eq_(u.comment, "I have a lovely bunch of ...")
-    eq_(u.user.id, 10)
-    eq_(u.user.text, "Foobar")
-    eq_(u.filename, "Foo_bar.jpg")
-    eq_(u.source, "https://foo")
-    eq_(u.size, 345678)
+    assert u.timestamp == Timestamp("20150101000000")
+    assert u.comment == "I have a lovely bunch of ..."
+    assert u.user.id == 10
+    assert u.user.text == "Foobar"
+    assert u.filename == "Foo_bar.jpg"
+    assert u.source == "https://foo"
+    assert u.size == 345678
 
     # JSON and Pickle
-    eq_(u, Upload(u.to_json()))
-    eq_(u, pickle.loads(pickle.dumps(u)))
+    assert u == Upload(u.to_json())
+    assert u == pickle.loads(pickle.dumps(u))
