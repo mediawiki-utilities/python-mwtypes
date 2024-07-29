@@ -1,7 +1,5 @@
 import pickle
 
-from nose.tools import eq_
-
 from ..page import Page
 from ..revision import Deleted, Revision
 from ..slots import Content, Slots
@@ -12,20 +10,20 @@ from ..user import User
 def test_revision():
     # No info
     r = Revision(10, Timestamp("20150101000000"))
-    eq_(r.id, 10)
-    eq_(r.timestamp, Timestamp("20150101000000"))
-    eq_(r.user, None)
-    eq_(r.page, None)
-    eq_(r.minor, None)
-    eq_(r.comment, None)
-    eq_(r.text, None)
-    eq_(r.bytes, None)
-    eq_(r.sha1, None)
-    eq_(r.parent_id, None)
-    eq_(r.model, None)
-    eq_(r.format, None)
-    eq_(r.deleted, None)
-    eq_(r.slots, None)
+    assert r.id == 10
+    assert r.timestamp == Timestamp("20150101000000")
+    assert r.user == None
+    assert r.page == None
+    assert r.minor == None
+    assert r.comment == None
+    assert r.text == None
+    assert r.bytes == None
+    assert r.sha1 == None
+    assert r.parent_id == None
+    assert r.model == None
+    assert r.format == None
+    assert r.deleted == None
+    assert r.slots == None
 
     # All info
     r = Revision(10, Timestamp("20150101000000"),
@@ -45,103 +43,103 @@ def test_revision():
                  parent_id=9,
                  deleted=Deleted(text=True, comment=False, user=False,
                                  restricted=False))
-    eq_(r.id, 10)
-    eq_(r.timestamp, Timestamp("20150101000000"))
-    eq_(r.user.id, 10)
-    eq_(r.user.text, "Foobar")
-    eq_(r.page.id, 12)
-    eq_(r.page.title, "Anarchism")
-    eq_(r.page.namespace, 2)
-    eq_(r.minor, False)
-    eq_(r.comment, "I have a lovely bunch of ...")
-    eq_(r.text, "I am the text")
-    eq_(r.slots['main'].text, "I am the text")
-    eq_(r.bytes, 257)
-    eq_(r.slots['main'].bytes, 257)
-    eq_(r.sha1, "fe5f4fe65fe765ef")
-    eq_(r.slots.sha1, "2345672bb")
-    eq_(r.model, "text")
-    eq_(r.slots['main'].model, "text")
-    eq_(r.format, "also_text")
-    eq_(r.slots['main'].format, "also_text")
-    eq_(r.parent_id, 9)
-    eq_(r.deleted.text, True)
-    eq_(r.deleted.comment, False)
-    eq_(r.deleted.user, False)
-    eq_(r.deleted.restricted, False)
+    assert r.id == 10
+    assert r.timestamp == Timestamp("20150101000000")
+    assert r.user.id == 10
+    assert r.user.text == "Foobar"
+    assert r.page.id == 12
+    assert r.page.title == "Anarchism"
+    assert r.page.namespace == 2
+    assert r.minor == False
+    assert r.comment == "I have a lovely bunch of ..."
+    assert r.text == "I am the text"
+    assert r.slots['main'].text == "I am the text"
+    assert r.bytes == 257
+    assert r.slots['main'].bytes == 257
+    assert r.sha1 == "fe5f4fe65fe765ef"
+    assert r.slots.sha1 == "2345672bb"
+    assert r.model == "text"
+    assert r.slots['main'].model == "text"
+    assert r.format == "also_text"
+    assert r.slots['main'].format == "also_text"
+    assert r.parent_id == 9
+    assert r.deleted.text == True
+    assert r.deleted.comment == False
+    assert r.deleted.user == False
+    assert r.deleted.restricted == False
 
     # JSON and Pickle
-    eq_(r, Revision(r.to_json()))
-    eq_(r, pickle.loads(pickle.dumps(r)))
+    assert r == Revision(r.to_json())
+    assert r == pickle.loads(pickle.dumps(r))
 
 
 def test_deleted():
     # No info
     d = Deleted()
-    eq_(d.text, None)
-    eq_(d.comment, None)
-    eq_(d.user, None)
-    eq_(d.restricted, None)
+    assert d.text == None
+    assert d.comment == None
+    assert d.user == None
+    assert d.restricted == None
 
     # Just one
     d = Deleted(text=True)
-    eq_(d.text, True)
-    eq_(d.comment, None)
-    eq_(d.user, None)
-    eq_(d.restricted, None)
+    assert d.text == True
+    assert d.comment == None
+    assert d.user == None
+    assert d.restricted == None
 
     # All
     d = Deleted(text=True, comment=False, user=True, restricted=False)
-    eq_(d.text, True)
-    eq_(d.comment, False)
-    eq_(d.user, True)
-    eq_(d.restricted, False)
+    assert d.text == True
+    assert d.comment == False
+    assert d.user == True
+    assert d.restricted == False
 
     d = Deleted.from_int(0)
-    eq_(d.text, False)
-    eq_(d.comment, False)
-    eq_(d.user, False)
-    eq_(d.restricted, False)
+    assert d.text == False
+    assert d.comment == False
+    assert d.user == False
+    assert d.restricted == False
 
     d = Deleted.from_int(3)
-    eq_(d.text, True)
-    eq_(d.comment, True)
-    eq_(d.user, False)
-    eq_(d.restricted, False)
+    assert d.text == True
+    assert d.comment == True
+    assert d.user == False
+    assert d.restricted == False
 
     d = Deleted.from_int(9)
-    eq_(d.text, True)
-    eq_(d.comment, False)
-    eq_(d.user, False)
-    eq_(d.restricted, True)
+    assert d.text == True
+    assert d.comment == False
+    assert d.user == False
+    assert d.restricted == True
 
     d = Deleted.from_int(15)
-    eq_(d.text, True)
-    eq_(d.comment, True)
-    eq_(d.user, True)
-    eq_(d.restricted, True)
+    assert d.text == True
+    assert d.comment == True
+    assert d.user == True
+    assert d.restricted == True
 
     # JSON and Pickle
-    eq_(d, Deleted(d.to_json()))
-    eq_(d, pickle.loads(pickle.dumps(d)))
+    assert d == Deleted(d.to_json())
+    assert d == pickle.loads(pickle.dumps(d))
 
 
 def test_user():
     # No info
     u = User()
-    eq_(u.id, None)
-    eq_(u.text, None)
+    assert u.id == None
+    assert u.text == None
 
     # Logged-in
     u = User(10, "Foobar")
-    eq_(u.id, 10)
-    eq_(u.text, "Foobar")
+    assert u.id == 10
+    assert u.text == "Foobar"
 
     # IP
     u = User(text="192.168.0.1")
-    eq_(u.id, None)
-    eq_(u.text, "192.168.0.1")
+    assert u.id == None
+    assert u.text == "192.168.0.1"
 
     # JSON and Pickle
-    eq_(u, User(u.to_json()))
-    eq_(u, pickle.loads(pickle.dumps(u)))
+    assert u == User(u.to_json())
+    assert u == pickle.loads(pickle.dumps(u))
